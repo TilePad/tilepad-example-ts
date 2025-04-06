@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="root" style="display: contents;"></div>
+</body>
+
+<script>
+
+    // Handle properties received
+    window.tilepad.onProperties((newProperties, ctx) => {
+        properties = newProperties;
+
+        // Request connection state from the plugin
+        window.tilepad.sendPluginMessage({
+            type: "PING"
+        })
+    });
+
+
+    // Handle messages from plugin
+    window.tilepad.onPluginMessage((data) => {
+        switch (data.type) {
+            case "PONG": {
+                const root = document.getElementById("root");
+                root.innerText = "Got message from plugin: " + data.message;
+                break;
+            }
+        }
+    });
+
+    // Request the current properties
+    window.tilepad.requestProperties();
+</script>
+
+</html>
