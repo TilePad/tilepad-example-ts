@@ -1,15 +1,16 @@
 {
     "plugin": {
-        "id": "com.jacobtread.tilepad.test-node",
-        "name": "Test Node",
+        "id": "com.jacobtread.tilepad.test-typescript",
+        "name": "Typescript Counter Example",
         "version": "0.0.1",
         "authors": [
             "Jacobtread"
         ],
-        "description": "Plugin for testing node support"
+        "description": "Example typescript counter plugin"
     },
     "category": {
-        "label": "Test Node"
+        "label": "Counter",
+        "icon": "images/counter.svg"
     },
     "bin": {
         "node": {
@@ -18,11 +19,25 @@
         }
     },
     "actions": {
-        "test": {
-            "label": "Test Node",
-            "icon": "images/shortcut.svg",
-            "description": "Test node action",
-            "inspector": "ui/test.html"
+        "increase": {
+            "label": "Increase",
+            "description": "Button to increase the counter",
+            "inspector": "ui/increase.html",
+            "icon": "images/increase.svg",
+            "icon_options": {
+                "padding": 30,
+                "background_color": "#000000"
+            }
+        },
+        "decrease": {
+            "label": "Decrease",
+            "description": "Button to decrease the counter",
+            "inspector": "ui/decrease.html",
+            "icon": "images/decrease.svg",
+            "icon_options": {
+                "padding": 30,
+                "background_color": "#000000"
+            }
         }
     }
 }
