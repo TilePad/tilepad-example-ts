@@ -1,4 +1,4 @@
-name: Cross-Compile and Bundle Plugin
+name: Build and Bundle Plugin
 
 on:
   # Trigger when a tag is pushed for a release
@@ -13,35 +13,31 @@ permissions:
   contents: write
 
 jobs:
-  build:
-    name: Build and publish plugin release
+  build_bundle:
+    name: Build & Bundle Plugin
     runs-on: ubuntu-latest
     steps:
-      # Checkout the repo for building
       - uses: actions/checkout@v4
 
-      # Setup node for building
-      - name: Use Node.js 20.x
+      # Try determine the node version from the plugin manifest
+      - name: Determine Node.js version
+        id: node_version
+        run: |
+          if [ -f ".tilepadPlugin/manifest.json" ]; then
+              NODE_VER=$(jq -r '.bin.node.version // empty' .tilepadPlugin/manifest.json)
+          fi
+          echo "NODE_VER=${NODE_VER:-22.14.0}" >> $GITHUB_ENV
+
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: ${{ env.NODE_VER }}
 
-      # Install the CLI tool for bundling
-      - uses: taiki-e/install-action@v2
-        with:
-          tool: tilepad-cli
-
-      # Build the plugin dependencies
       - name: Install dependencies
         run: npm install
 
-      # Build the plugin
-      - name: Run tilepad bundle
-        run: npm run build
-
-      # Bundle the plugin
-      - name: Run tilepad bundle
-        run: tilepad bundle --name plugin
+      - name: Bundle Plugin
+        run: npm run bundle
 
       # Upload an artifact if manually triggered
       - name: Upload plugin artifact
